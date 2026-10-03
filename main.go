@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 type Content struct {
@@ -36,12 +37,12 @@ type Content struct {
 }
 
 type PageData struct {
-	Lang       string
-	AltLangURL string
+	Lang        string
+	AltLangURL  string
 	AltLangText string
-	MetaTitle  string
-	MetaDesc   string
-	Content    Content
+	MetaTitle   string
+	MetaDesc    string
+	Content     Content
 }
 
 var ruContent = Content{
@@ -101,8 +102,11 @@ func main() {
 	fs := http.FileServer(http.Dir("./assets"))
 	http.Handle("/assets/", http.StripPrefix("/assets/", fs))
 
+	// Регистрация роутов
 	http.HandleFunc("/", handleHome)
 	http.HandleFunc("/en", handleHomeEN)
+	http.HandleFunc("/corporations/", handleCorp)
+	http.HandleFunc("/en/corporations/", handleCorpEN)
 
 	log.Printf("Сервер запущен на порту %s... Погнали!", port)
 	log.Fatal(http.ListenAndServe(":"+port, nil))
@@ -115,17 +119,22 @@ func renderTemplate(w http.ResponseWriter, tmpl string, data PageData) {
 	t, err := template.ParseFiles(layoutPath, tmplPath)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		http.Error(w, "Template error", 500)
+		render500(w, data.Lang)
 		return
 	}
 
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	t.ExecuteTemplate(w, "layout", data)
+	err = t.ExecuteTemplate(w, "layout", data)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		render500(w, data.Lang)
+	}
 }
 
 func handleHome(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
 		w.WriteHeader(http.StatusNotFound)
+		render404(w, "ru")
 		return
 	}
 	data := PageData{
@@ -149,4 +158,75 @@ func handleHomeEN(w http.ResponseWriter, r *http.Request) {
 		Content:     enContent,
 	}
 	renderTemplate(w, "index.html", data)
+}
+
+func handleCorp(w http.ResponseWriter, r *http.Request) {
+	// Проверяем валидность корпорации (apple, google, microsoft)
+	corpName := strings.TrimPrefix(r.URL.Path, "/corporations/")
+	if corpName != "apple" && corpName != "google" && corpName != "microsoft" {
+		w.WriteHeader(http.StatusNotFound)
+		render404(w, "ru")
+		return
+	}
+
+	data := PageData{
+		Lang:        "ru",
+		AltLangURL:  "/en" + r.URL.Path,
+		AltLangText: "EN",
+		MetaTitle:   "Досье на корпорацию | Техно-монополии",
+		MetaDesc:    "Глубинный разбор внутренней кухни IT-гиганта.",
+		Content:     ruContent,
+	}
+	renderTemplate(w, "corp.html", data)
+}
+
+func handleCorpEN(w http.ResponseWriter, r *http.Request) {
+	corpName := strings.TrimPrefix(r.URL.Path, "/en/corporations/")
+	if corpName != "apple" && corpName != "google" && corpName != "microsoft" {
+		w.WriteHeader(http.StatusNotFound)
+		render404(w, "en")
+		return
+	}
+
+	data := PageData{
+		Lang:        "en",
+		AltLangURL:  strings.TrimPrefix(r.URL.Path, "/en"),
+		AltLangText: "РУ",
+		MetaTitle:   "Corporation Dossier | Tech Monopolies",
+		MetaDesc:    "In-depth breakdown of the tech giant's inner workings.",
+		Content:     enContent,
+	}
+	renderTemplate(w, "corp.html", data)
+}
+
+func render404(w http.ResponseWriter, lang string) {
+	data := PageData{
+		Lang:      lang,
+		MetaTitle: "404 — Страница не найдена",
+		MetaDesc:  "Эту страницу сожрали алгоритмы.",
+	}
+	tmplPath := filepath.Join("templates", "404.html")
+	layoutPath := filepath.Join("templates", "layout.html")
+	t, err := template.ParseFiles(layoutPath, tmplPath)
+	if err != nil {
+		http.Error(w, "404 Not Found", http.StatusNotFound)
+		return
+	}
+	t.ExecuteTemplate(w, "layout", data)
+}
+
+func render500(w http.ResponseWriter, lang string) {
+	data := PageData{
+		Lang:      lang,
+		MetaTitle: "500 — Ошибка сервера",
+		MetaDesc:  "Сервер не выдержал напора капитализма.",
+	}
+	tmplPath := filepath.Join("templates", "500.html")
+	layoutPath := filepath.Join("templates", "layout.html")
+	t, err := template.ParseFiles(layoutPath, tmplPath)
+	if err != nil {
+		http.Error(w, "500 Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+	t.ExecuteTemplate(w, "layout", data)
 }
