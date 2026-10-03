@@ -1,0 +1,145 @@
+:root {
+    --bg-color: #f3f4f6;
+    --text-color: #111827;
+    --glass-bg: rgba(255, 255, 255, 0.65);
+    --glass-border: rgba(255, 255, 255, 0.4);
+    --accent: #2563eb;
+    --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-color: #0b0f19;
+        --text-color: #f9fafb;
+        --glass-bg: rgba(15, 23, 42, 0.65);
+        --glass-border: rgba(255, 255, 255, 0.08);
+        --accent: #3b82f6;
+        --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    }
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    transition: background 0.3s ease, color 0.3s ease;
+    padding: 0;
+    margin: 0;
+}
+
+/* Эффект Liquid Glass (как на айфоне) */
+.glass-header, .glass-card, .glass-footer {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--shadow);
+}
+
+.glass-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: center;
+}
+
+.nav-container {
+    width: 100%;
+    max-width: 1400px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-weight: 900;
+    font-size: 1.25rem;
+    color: var(--text-color);
+    text-decoration: none;
+    letter-spacing: -0.05em;
+}
+
+.nav-links {
+    display: flex;
+    gap: 2rem;
+}
+
+.nav-links a {
+    color: var(--text-color);
+    text-decoration: none;
+    font-weight: 500;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+
+.nav-links a:hover {
+    opacity: 1;
+}
+
+.lang-switch-btn {
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    background: var(--accent);
+    color: #fff;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.875rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transition: transform 0.2s ease;
+}
+
+.lang-switch-btn:hover {
+    transform: scale(1.05);
+}
+
+.main-content {
+    max-width: 1200px;
+    margin: 3rem auto;
+    padding: 0 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+.glass-card {
+    border-radius: 24px;
+    padding: 3rem;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-card:hover {
+    transform: translateY(-4px);
+}
+
+.glass-footer {
+    text-align: center;
+    padding: 2rem;
+    margin-top: 5rem;
+    font-size: 0.9rem;
+    opacity: 0.7;
+}
+
+/* Абсолютный адаптив под любые устройства */
+@media (max-width: 768px) {
+    .nav-links {
+        display: none; /* На мобилках прячем в бургер или упрощаем */
+    }
+    .glass-card {
+        padding: 1.5rem;
+    }
+}
+
+@media (min-width: 1920px) {
+    .main-content {
+        max-width: 1600px;
+    }
+}

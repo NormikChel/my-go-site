@@ -1,0 +1,84 @@
+{{define "content"}}
+<section class="hero glass-card">
+    <div class="hero-badge">{{.Content.Badge}}</div>
+    <h1>{{.Content.Title}}</h1>
+    <p class="hero-lead">{{.Content.Lead}}</p>
+    <div class="hero-stats">
+        <div class="stat-item">
+            <span class="stat-num">{{.Content.Stat1Val}}</span>
+            <span class="stat-label">{{.Content.Stat1Lbl}}</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-num">{{.Content.Stat2Val}}</span>
+            <span class="stat-label">{{.Content.Stat2Lbl}}</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-num">{{.Content.Stat3Val}}</span>
+            <span class="stat-label">{{.Content.Stat3Lbl}}</span>
+        </div>
+    </div>
+</section>
+
+<section id="apple" class="content-section glass-card">
+    <div class="corp-header">
+        <span class="corp-tag apple-tag">{{.Content.AppleTag}}</span>
+        <h2>{{.Content.AppleTitle}}</h2>
+    </div>
+    <div class="corp-grid">
+        <div class="corp-text">
+            <p>{{.Content.AppleText1}}</p>
+            <p>{{.Content.AppleText2}}</p>
+        </div>
+        <div class="corp-visual">
+            <div class="quote-box">
+                «Мы не продаем устройства. Мы продаем право владеть частью нашего маркетинга». — <em>Негласный девиз</em>
+            </div>
+        </div>
+    </div>
+    <div class="read-more-wrapper">
+        <a href="/corporations/apple" class="btn-primary">{{.Content.AppleBtn}}</a>
+    </div>
+</section>
+
+<section id="google" class="content-section glass-card">
+    <div class="corp-header">
+        <span class="corp-tag google-tag">{{.Content.GoogleTag}}</span>
+        <h2>{{.Content.GoogleTitle}}</h2>
+    </div>
+    <div class="corp-grid">
+        <div class="corp-text">
+            <p>{{.Content.GoogleText1}}</p>
+            <p>{{.Content.GoogleText2}}</p>
+        </div>
+        <div class="corp-visual">
+            <div class="quote-box">
+                «Если вы не платите за продукт, значит товар — это ваши персональные данные и слежка в реальном времени».
+            </div>
+        </div>
+    </div>
+    <div class="read-more-wrapper">
+        <a href="/corporations/google" class="btn-primary">{{.Content.GoogleBtn}}</a>
+    </div>
+</section>
+
+<section id="microsoft" class="content-section glass-card">
+    <div class="corp-header">
+        <span class="corp-tag ms-tag">{{.Content.MSTag}}</span>
+        <h2>{{.Content.MSTitle}}</h2>
+    </div>
+    <div class="corp-grid">
+        <div class="corp-text">
+            <p>{{.Content.MSText1}}</p>
+            <p>{{.Content.MSText2}}</p>
+        </div>
+        <div class="corp-visual">
+            <div class="quote-box">
+                «Ваш компьютер будет перезагружен через 10 минут для установки критически важных обновлений погоды».
+            </div>
+        </div>
+    </div>
+    <div class="read-more-wrapper">
+        <a href="/corporations/microsoft" class="btn-primary">{{.Content.MSBtn}}</a>
+    </div>
+</section>
+{{end}}

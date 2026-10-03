@@ -1,0 +1,79 @@
+{{define "layout"}}
+<!DOCTYPE html>
+<html lang="{{.Lang}}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>{{.MetaTitle}}</title>
+    <meta name="description" content="{{.MetaDesc}}">
+    
+    <!-- SEO & Robots -->
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <link rel="canonical" href="https://example.com{{.AltLangURL}}">
+    <link rel="alternate" hreflang="{{.Lang}}" href="https://example.com">
+
+    <!-- Open Graph / Соцсети -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{{.MetaTitle}}">
+    <meta property="og:description" content="{{.MetaDesc}}">
+    <meta property="og:url" content="https://example.com">
+    <meta property="og:site_name" content="Tech Monopolies Exposed">
+    <meta property="og:image" content="https://example.com/assets/images/og-cover.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{.MetaTitle}}">
+    <meta name="twitter:description" content="{{.MetaDesc}}">
+    <meta name="twitter:image" content="https://example.com/assets/images/og-cover.jpg">
+
+    <!-- Schema.org / JSON-LD -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Tech Monopolies Exposed",
+      "url": "https://example.com",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://example.com/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+
+    <!-- Стили -->
+    <link rel="stylesheet" href="/assets/static/css/style.css">
+</head>
+<body>
+    <!-- Шапка с инверсным переключателем языков -->
+    <header class="glass-header">
+        <div class="nav-container">
+            <a href="{{if eq .Lang "en"}}/en{{else}}/{{end}}" class="logo">CORP_EXPOSED</a>
+            <nav class="nav-links">
+                <a href="/#apple">Apple</a>
+                <a href="/#google">Google</a>
+                <a href="/#microsoft">Microsoft</a>
+            </nav>
+            <div class="actions">
+                <a href="{{.AltLangURL}}" class="lang-switch-btn">{{.AltLangText}}</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Основной контент -->
+    <main class="main-content">
+        {{template "content" .}}
+    </main>
+
+    <!-- Футер -->
+    <footer class="glass-footer">
+        <p>&copy; 2026 Корпоративный синдикат. Все права защищены законом о бабле.</p>
+    </footer>
+
+    <!-- Скрипты -->
+    <script src="/assets/static/js/script.js" defer></script>
+</body>
+</html>
+{{end}}
